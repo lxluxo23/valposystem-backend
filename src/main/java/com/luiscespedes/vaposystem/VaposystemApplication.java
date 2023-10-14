@@ -18,6 +18,7 @@ public class VaposystemApplication {
 		SpringApplication.run(VaposystemApplication.class, args);
 	}
 
+
 	@Bean
 	public CommandLineRunner initData(
 			PersonRepository personRepository

@@ -3,6 +3,7 @@ package com.luiscespedes.vaposystem.controllers;
 import com.luiscespedes.vaposystem.dtos.PersonDTO;
 import com.luiscespedes.vaposystem.models.Person;
 import com.luiscespedes.vaposystem.repositories.PersonRepository;
+import com.luiscespedes.vaposystem.utils.RutUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,15 @@ public class PersonController {
             @RequestBody
             PersonDTO personDTO
     ){
+
+        if (personRepository.findByrutDni(personDTO.getRutDni()) != null){
+            return new ResponseEntity<>("Person already register!", HttpStatus.CONFLICT);
+        }
         if (personDTO.getRutDni().isEmpty() || personDTO.getNombres().isEmpty() || personDTO.getApellidoPaterno().isEmpty() || personDTO.getApellidoMaterno().isEmpty() || personDTO.getNombreCalle().isEmpty() || personDTO.getNumero()==null ||personDTO.getRestoDireccion().isEmpty() || personDTO.getCorreo().isEmpty()){
             return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
+        }
+        if (!RutUtils.isValidRut(personDTO.getRutDni())){
+            return new ResponseEntity<>("invalid RUT or DNI", HttpStatus.BAD_REQUEST);
         }
         Person p1 = new Person(
                 personDTO.getRutDni(),
@@ -65,7 +73,7 @@ public class PersonController {
             return new ResponseEntity<>("The person does not exist.", HttpStatus.FORBIDDEN);
         }
         personRepository.deleteById(id);
-        return new ResponseEntity<>("Person successfully deleted.", HttpStatus.CREATED);
+        return new ResponseEntity<>("Person successfully deleted.", HttpStatus.OK);
     }
     @Transactional
     @PutMapping("/person/{id}")
@@ -79,6 +87,9 @@ public class PersonController {
         Person person = personRepository.findById(id).orElse(null);
         if (person == null) {
             return new ResponseEntity<>("The person does not exist.", HttpStatus.FORBIDDEN);
+        }
+        if (!RutUtils.isValidRut(personDTO.getRutDni())){
+            return new ResponseEntity<>("invalid RUT or DNI", HttpStatus.BAD_REQUEST);
         }
         if (personDTO.getRutDni() != null){
             person.setRutDni(personDTO.getRutDni());
@@ -111,6 +122,6 @@ public class PersonController {
 
         personRepository.save(person);
 
-        return new ResponseEntity<>("Person successfully updated.", HttpStatus.CREATED);
+        return new ResponseEntity<>("Person successfully updated.", HttpStatus.OK);
     }
 }

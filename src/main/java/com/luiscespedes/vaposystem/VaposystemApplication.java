@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -26,7 +27,7 @@ public class VaposystemApplication {
 	) {
 		return (args) -> {
 			Person person1 = new Person();
-			person1.setRutDni("12345678-9");
+			person1.setRutDni("11111111-1");
 			person1.setNombres("Juan");
 			person1.setApellidoPaterno("Pérez");
 			person1.setApellidoMaterno("González");
@@ -34,10 +35,10 @@ public class VaposystemApplication {
 			person1.setNumero(123);
 			person1.setRestoDireccion("Dpto. 4");
 			person1.setCorreo("juan.perez@gmail.com");
-			person1.setFechaNacimiento(LocalDateTime.of(1990, 1, 1, 0, 0));
+			person1.setFechaNacimiento(LocalDate.of(1990, 1, 1));
 
 			Person person2 = new Person();
-			person2.setRutDni("98765432-1");
+			person2.setRutDni("49059383-7");
 			person2.setNombres("María");
 			person2.setApellidoPaterno("González");
 			person2.setApellidoMaterno("López");
@@ -45,10 +46,10 @@ public class VaposystemApplication {
 			person2.setNumero(456);
 			person2.setRestoDireccion("Piso 2");
 			person2.setCorreo("maria.gonzalez@gmail.com");
-			person2.setFechaNacimiento(LocalDateTime.of(1995, 2, 2, 0, 0));
+			person2.setFechaNacimiento(LocalDate.of(1995, 2, 2));
 
 			Person person3 = new Person();
-			person3.setRutDni("09876543-2");
+			person3.setRutDni("89561427-0");
 			person3.setNombres("Pedro");
 			person3.setApellidoPaterno("López");
 			person3.setApellidoMaterno("Sánchez");
@@ -56,7 +57,7 @@ public class VaposystemApplication {
 			person3.setNumero(789);
 			person3.setRestoDireccion("Casa 10");
 			person3.setCorreo("pedro.lopez@gmail.com");
-			person3.setFechaNacimiento(LocalDateTime.of(2000, 3, 3, 0, 0));
+			person3.setFechaNacimiento(LocalDate.of(2000, 3, 3));
 
 
 			personRepository.save(person1);

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,9 +29,9 @@ public class Person {
     private Integer numero;
     private String restoDireccion;
     private String correo;
-    private LocalDateTime fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
-    public Person(String rutDni, String nombres, String apellidoPaterno, String apellidoMaterno, String nombreCalle, Integer numero, String restoDireccion, String correo, LocalDateTime fechaNacimiento) {
+    public Person(String rutDni, String nombres, String apellidoPaterno, String apellidoMaterno, String nombreCalle, Integer numero, String restoDireccion, String correo, LocalDate fechaNacimiento) {
         this.rutDni = rutDni;
         this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;

@@ -4,6 +4,7 @@ import com.luiscespedes.vaposystem.models.Person;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class PersonDTO {
     private Integer numero;
     private String restoDireccion;
     private String correo;
-    private LocalDateTime fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
     public PersonDTO(Person person){
         this.id = person.getId();

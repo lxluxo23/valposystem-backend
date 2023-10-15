@@ -209,4 +209,7 @@ En tal caso que se desee compilar y montar manualmente el proyecto de angular ha
 
  - Correr el comando `ng build` en el proyecto de frontend, si se desea compilar la versión de producción el comando seria `npm run build-prod` la diferencia de este es el cambio de "enviroment" ya qu este esta preparado especialmente para ser levantado con el servidor web de springboot
 - Una vez generada la build copiar todos los archivos de la carpeta generada `dist/valposystem-front` hacia la ruta del backend `src/main/resources/static`
+- > Happy coding!
+
+<img src="https://user-images.githubusercontent.com/5693916/30273942-84252588-96fb-11e7-9420-5516b92cb1f7.gif" width="150">
 

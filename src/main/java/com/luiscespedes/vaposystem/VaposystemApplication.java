@@ -27,7 +27,7 @@ public class VaposystemApplication {
 	) {
 		return (args) -> {
 			Person person1 = new Person();
-			person1.setRutDni("11111111-1");
+			person1.setRutDni("111111111");
 			person1.setNombres("Juan");
 			person1.setApellidoPaterno("Pérez");
 			person1.setApellidoMaterno("González");
@@ -38,7 +38,7 @@ public class VaposystemApplication {
 			person1.setFechaNacimiento(LocalDate.of(1990, 1, 1));
 
 			Person person2 = new Person();
-			person2.setRutDni("49059383-7");
+			person2.setRutDni("490593837");
 			person2.setNombres("María");
 			person2.setApellidoPaterno("González");
 			person2.setApellidoMaterno("López");
@@ -49,7 +49,7 @@ public class VaposystemApplication {
 			person2.setFechaNacimiento(LocalDate.of(1995, 2, 2));
 
 			Person person3 = new Person();
-			person3.setRutDni("89561427-0");
+			person3.setRutDni("895614270");
 			person3.setNombres("Pedro");
 			person3.setApellidoPaterno("López");
 			person3.setApellidoMaterno("Sánchez");

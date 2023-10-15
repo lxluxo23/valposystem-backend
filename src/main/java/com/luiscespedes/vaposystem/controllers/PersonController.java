@@ -8,9 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,29 +34,41 @@ public class PersonController {
         return personRepository.findAll().stream().map(PersonDTO::new).collect(toList());
 
     }
+
     @GetMapping("person/{id}")
     public PersonDTO getPersonById(@PathVariable Integer id) {
         return personRepository.findById(id).map(PersonDTO::new).orElse(null);
 
     }
+
     @Transactional
     @PostMapping("/person")
-    ResponseEntity<Object> createPerson(
+    ResponseEntity<?> createPerson(
+            @Valid
             @RequestBody
-            PersonDTO personDTO
-    ){
+            PersonDTO personDTO,
+            BindingResult result
+    ) {
+        HashMap<String, Object> response = new HashMap<>();
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(err -> {
+                        return " '" + err.getField() + "': " + err.getDefaultMessage();
+                    }).collect(Collectors.toList());
+            response.put("errors", errors);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }
 
-        if (personRepository.findByrutDni(personDTO.getRutDni()) != null){
+        if (personRepository.findByrutDni(personDTO.getRutDni()) != null) {
             return new ResponseEntity<>("Person already register!", HttpStatus.CONFLICT);
         }
-        if (personDTO.getRutDni().isEmpty() || personDTO.getNombres().isEmpty() || personDTO.getApellidoPaterno().isEmpty() || personDTO.getApellidoMaterno().isEmpty() || personDTO.getNombreCalle().isEmpty() || personDTO.getNumero()==null ||personDTO.getRestoDireccion().isEmpty() || personDTO.getCorreo().isEmpty()){
-            return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
-        }
-        if (!RutUtils.isValidRut(personDTO.getRutDni())){
+        
+        if (!RutUtils.isValidRut(personDTO.getRutDni())) {
             return new ResponseEntity<>("invalid RUT or DNI", HttpStatus.BAD_REQUEST);
         }
         Person p1 = new Person(
-                personDTO.getRutDni(),
+                RutUtils.cleanRut(personDTO.getRutDni()),
                 personDTO.getNombres(),
                 personDTO.getApellidoPaterno(),
                 personDTO.getApellidoMaterno(),
@@ -64,17 +83,18 @@ public class PersonController {
     }
 
     @DeleteMapping("/person/{id}")
-    ResponseEntity<Object> deletePerson(@PathVariable Integer id){
-        if (id==null){
+    ResponseEntity<Object> deletePerson(@PathVariable Integer id) {
+        if (id == null) {
             return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
         }
         Person p1 = personRepository.findById(id).orElse(null);
-        if (p1 == null){
+        if (p1 == null) {
             return new ResponseEntity<>("The person does not exist.", HttpStatus.FORBIDDEN);
         }
         personRepository.deleteById(id);
         return new ResponseEntity<>("Person successfully deleted.", HttpStatus.OK);
     }
+
     @Transactional
     @PutMapping("/person/{id}")
     ResponseEntity<Object> updatePerson(
@@ -88,34 +108,34 @@ public class PersonController {
         if (person == null) {
             return new ResponseEntity<>("The person does not exist.", HttpStatus.FORBIDDEN);
         }
-        if (!RutUtils.isValidRut(personDTO.getRutDni())){
+        if (!RutUtils.isValidRut(personDTO.getRutDni())) {
             return new ResponseEntity<>("invalid RUT or DNI", HttpStatus.BAD_REQUEST);
         }
-        if (personDTO.getRutDni() != null){
-            person.setRutDni(personDTO.getRutDni());
+        if (personDTO.getRutDni() != null) {
+            person.setRutDni(RutUtils.cleanRut(personDTO.getRutDni()));
         }
-        if (personDTO.getNombres() != null){
+        if (personDTO.getNombres() != null) {
             person.setNombres(personDTO.getNombres());
         }
-        if (personDTO.getApellidoPaterno()!= null){
+        if (personDTO.getApellidoPaterno() != null) {
             person.setApellidoPaterno(personDTO.getApellidoPaterno());
         }
-        if (personDTO.getApellidoMaterno() != null){
+        if (personDTO.getApellidoMaterno() != null) {
             person.setApellidoMaterno(personDTO.getApellidoMaterno());
         }
-        if (personDTO.getNombreCalle() != null){
+        if (personDTO.getNombreCalle() != null) {
             person.setNombreCalle(personDTO.getNombreCalle());
         }
-        if (personDTO.getNumero() != null){
+        if (personDTO.getNumero() != null) {
             person.setNumero(personDTO.getNumero());
         }
-        if (personDTO.getRestoDireccion() != null){
+        if (personDTO.getRestoDireccion() != null) {
             person.setRestoDireccion(personDTO.getRestoDireccion());
         }
-        if (personDTO.getCorreo()!= null){
+        if (personDTO.getCorreo() != null) {
             person.setCorreo(personDTO.getCorreo());
         }
-        if (personDTO.getFechaNacimiento()!=null){
+        if (personDTO.getFechaNacimiento() != null) {
             person.setFechaNacimiento(personDTO.getFechaNacimiento());
         }
         //los if de arriba son por si no se quiere actualizar en su totalidad a la persona

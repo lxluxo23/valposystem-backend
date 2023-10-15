@@ -22,4 +22,18 @@ public class RutUtils {
         }
         return validate;
     }
+    public static String cleanRut(String rut){
+        try {
+            rut =  rut.toUpperCase();
+            rut = rut.replace(".", "");
+            rut = rut.replace("-", "");
+
+            }
+
+         catch (Exception e) {
+            System.out.println("Failed!");
+        }
+        return  rut;
+
+    }
 }
